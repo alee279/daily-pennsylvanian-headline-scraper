@@ -4,7 +4,7 @@ on:
   pull_request:
     branches: [main]
   schedule:
-    - cron: "0 20 * * *"  # 📅 Scrape once a day at 8PM, see crontab.guru for help
+    - cron: "0 20 * * *" # 📅 Scrape once a day at 8PM, see crontab.guru for help
 
 name: Scrape Update 🔄
 jobs:
@@ -32,15 +32,7 @@ jobs:
         run: |
           python -m pip install --upgrade pipenv wheel
 
-      - name: 🔄 Check pipenv cache before installing dependencies
-        id: cache-pipenv
-        uses: actions/cache@v4
-        with:
-          path: ~/.local/share/virtualenvs
-          key: ${{ runner.os }}-pipenv-${{ hashFiles('**/Pipfile.lock') }}
-
       - name: 🛠 Install dependencies
-        if: steps.cache-pipenv.outputs.cache-hit != 'true'
         run: |
           touch Pipfile
           pipenv install --deploy --dev
